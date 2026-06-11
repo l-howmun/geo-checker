@@ -3,11 +3,13 @@
 namespace App\Agents;
 
 use Laravel\Ai\Attributes\Model;
+use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Promptable;
 
-#[Model('openrouter/free')]
+#[Provider('openai')]
+#[Model('gpt-4o-mini')]
 #[Timeout(30)]
 class SentimentClassifier implements Agent
 {
