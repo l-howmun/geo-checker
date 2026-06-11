@@ -39,7 +39,7 @@ class GeoCheckerController extends Controller
             }
 
             // Simulate AI search engine response
-            $response = SearchSimulator::make()->prompt($prompt, model: 'gpt-4o-mini');
+            $response = SearchSimulator::make()->prompt($prompt);
             $answer = $response->text;
 
             // Check if brand is mentioned
@@ -58,8 +58,7 @@ class GeoCheckerController extends Controller
             $sentiment = 'neutral';
             if ($mentioned && $snippet) {
                 $sentimentResponse = SentimentClassifier::make()->prompt(
-                    "Brand: {$brand}\nText: {$snippet}",
-                    model: 'gpt-4o-mini'
+                    "Brand: {$brand}\nText: {$snippet}"
                 );
                 $sentiment = strtolower(trim($sentimentResponse->text));
                 if (!in_array($sentiment, ['positive', 'neutral', 'negative'])) {

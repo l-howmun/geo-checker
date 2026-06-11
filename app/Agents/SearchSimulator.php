@@ -2,9 +2,11 @@
 
 namespace App\Agents;
 
+use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Promptable;
 
+#[Model('google/gemma-4-26b-a4b-it:free')]
 class SearchSimulator implements Agent
 {
     use Promptable;

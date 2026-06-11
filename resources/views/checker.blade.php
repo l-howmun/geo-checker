@@ -19,7 +19,7 @@
         <form id="checkForm" class="space-y-6 bg-gray-900 rounded-xl p-6 border border-gray-800">
             <div>
                 <label class="block text-sm font-medium text-gray-300 mb-1">Brand Name</label>
-                <input type="text" id="brand" placeholder="e.g. SiteGiant, Grab, Shopee"
+                <input type="text" id="brand" placeholder="e.g. Grab, Shopee, DeliverEat"
                     class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
             </div>
 

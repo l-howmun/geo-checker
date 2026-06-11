@@ -29,9 +29,10 @@ sed -i 's|APP_URL=http://localhost|APP_URL=https://geo.horizonit.dev|' .env
 sed -i 's/APP_ENV=local/APP_ENV=production/' .env
 sed -i 's/APP_DEBUG=true/APP_DEBUG=false/' .env
 
-# Add OpenAI key placeholder - replace after deploy
+# Add OpenRouter key placeholder - replace after deploy
 echo "" >> .env
-echo "OPENAI_API_KEY=sk-placeholder-replace-me" >> .env
+echo "OPENROUTER_API_KEY=sk-or-placeholder-replace-me" >> .env
+echo "AI_DEFAULT_PROVIDER=openrouter" >> .env
 
 php artisan key:generate --force
 php artisan migrate --force
