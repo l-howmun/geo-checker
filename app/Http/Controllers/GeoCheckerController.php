@@ -6,6 +6,7 @@ use App\Models\VisibilityCheck;
 use App\Agents\SearchSimulator;
 use App\Agents\SentimentClassifier;
 use Illuminate\Http\Request;
+use Throwable;
 
 class GeoCheckerController extends Controller
 {
@@ -29,7 +30,7 @@ class GeoCheckerController extends Controller
             // Check cache first (24h)
             $cached = VisibilityCheck::where('brand', $brand)
                 ->where('prompt', $prompt)
-                ->where('engine', 'openai')
+                ->where('engine', 'openrouter')
                 ->where('created_at', '>=', now()->subHours(24))
                 ->first();
 
@@ -38,9 +39,15 @@ class GeoCheckerController extends Controller
                 continue;
             }
 
-            // Simulate AI search engine response
-            $response = SearchSimulator::make()->prompt($prompt);
-            $answer = $response->text;
+            try {
+                // Simulate AI search engine response
+                $response = SearchSimulator::make()->prompt($prompt);
+                $answer = $response->text;
+            } catch (Throwable $e) {
+                return response()->json([
+                    'message' => 'AI provider temporarily unavailable. Please try again in a minute.',
+                ], 503);
+            }
 
             // Check if brand is mentioned
             $mentioned = stripos($answer, $brand) !== false;
@@ -57,11 +64,15 @@ class GeoCheckerController extends Controller
             // Classify sentiment
             $sentiment = 'neutral';
             if ($mentioned && $snippet) {
-                $sentimentResponse = SentimentClassifier::make()->prompt(
-                    "Brand: {$brand}\nText: {$snippet}"
-                );
-                $sentiment = strtolower(trim($sentimentResponse->text));
-                if (!in_array($sentiment, ['positive', 'neutral', 'negative'])) {
+                try {
+                    $sentimentResponse = SentimentClassifier::make()->prompt(
+                        "Brand: {$brand}\nText: {$snippet}"
+                    );
+                    $sentiment = strtolower(trim($sentimentResponse->text));
+                    if (!in_array($sentiment, ['positive', 'neutral', 'negative'])) {
+                        $sentiment = 'neutral';
+                    }
+                } catch (Throwable) {
                     $sentiment = 'neutral';
                 }
             }
@@ -70,7 +81,7 @@ class GeoCheckerController extends Controller
             $check = VisibilityCheck::create([
                 'brand' => $brand,
                 'prompt' => $prompt,
-                'engine' => 'openai',
+                'engine' => 'openrouter',
                 'mentioned' => $mentioned,
                 'snippet' => $snippet,
                 'sentiment' => $sentiment,
