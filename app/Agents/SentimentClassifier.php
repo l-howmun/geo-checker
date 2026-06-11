@@ -6,7 +6,7 @@ use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Promptable;
 
-#[Model('meta-llama/llama-4-maverick:free')]
+#[Model('openrouter/free')]
 class SentimentClassifier implements Agent
 {
     use Promptable;
