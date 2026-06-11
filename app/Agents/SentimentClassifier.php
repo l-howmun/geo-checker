@@ -3,10 +3,12 @@
 namespace App\Agents;
 
 use Laravel\Ai\Attributes\Model;
+use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Promptable;
 
-#[Model('google/gemma-3-27b-it')]
+#[Model('openrouter/free')]
+#[Timeout(30)]
 class SentimentClassifier implements Agent
 {
     use Promptable;
