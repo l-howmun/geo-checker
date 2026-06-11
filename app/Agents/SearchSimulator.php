@@ -6,7 +6,7 @@ use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Promptable;
 
-#[Model('openrouter/free')]
+#[Model('google/gemma-3-27b-it')]
 class SearchSimulator implements Agent
 {
     use Promptable;
